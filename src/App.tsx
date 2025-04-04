@@ -1,16 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Login from './pages/Login'
-import Appointments from './pages/Appointments'
-import Confirmation from './pages/Confirmation'
+// src/App.tsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import LoginPage from './pages/LoginPage'
+import AppointmentsPage from './pages/AppointmentsPage'
+import PatientProfilePage from './pages/PatientProfilePage'
+import ProtectedRoute from './components/Auth/ProtectedRoute'
 
-export default function App() {
+function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/appointments" element={<Appointments />} />
-        <Route path="/confirmation" element={<Confirmation />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/appointments" element={<AppointmentsPage />} />
+            <Route path="/profile" element={<PatientProfilePage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
+
+export default App
